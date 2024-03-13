@@ -35,7 +35,41 @@
   </div>
 
 <script>
-//Your code goes here 
+  window.onload = function() {
+    var container = document.getElementById('container');
+    var cubes = document.getElementsByClassName('cube');
+    var dragging = false;
+    var startX, offsetX, left;
+
+    // Mouse down event
+    container.addEventListener('mousedown', function(e) {
+      dragging = true;
+      startX = e.clientX;
+      offsetX = 0;
+      left = parseInt(container.style.left) || 0;
+    });
+
+    // Mouse move event
+    container.addEventListener('mousemove', function(e) {
+      if (dragging) {
+        var diffX = e.clientX - startX;
+        offsetX = diffX;
+        container.style.left = (left + diffX) + 'px';
+      }
+    });
+
+    // Mouse up event
+    container.addEventListener('mouseup', function(e) {
+      if (dragging) {
+        dragging = false;
+        // Determine which cube to slide to
+        var slideToCubeIndex = Math.round(-offsetX / 100);
+        slideToCubeIndex = Math.max(0, Math.min(cubes.length - 1, slideToCubeIndex));
+        var targetLeft = -slideToCubeIndex * 100;
+        container.style.left = targetLeft + 'px';
+      }
+    });
+  };
 </script>
 
   </body>
